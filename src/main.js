@@ -1,11 +1,11 @@
 import { createApp } from 'vue'
 import App from './App.vue'
+import router from './router/router'
+
 
 
 const app = createApp(App)
 
-// Use o Vuetify
+app.use(router);
 
-
-// Monte o aplicativo
 app.mount('#app')

@@ -25,22 +25,15 @@
         </form>
 
 
-        <form class="entrar" action="#">
+        <form class="entrar" @submit.prevent=loginUsuario>
           <h2>MARK</h2>
           <div>Para continuar, faça o seu login</div>
-          <input type="email" placeholder="Email" />
-
-          <div style="position: relative;">
-            <input type="password" id="senha" placeholder="Senha" />
-            <span id="mostrarSenha" onclick="mostrarOcultarSenha()">
-              <i class="fas" :class="showPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
-            </span>
-          </div>
-          
-
+          <input type="email" v-model="email" placeholder="Email" />
+          <input type="senha" v-model="senha" placeholder="Senha" />
+        
           <a href="#">Esqueceu a senha?</a>
 
-          <button>Entrar</button>
+          <button type="submit">Entrar</button>
         </form>
 
       </div>
@@ -49,50 +42,38 @@
   </template>
 
 <script>
+
 export default {
-  data () {
+  data() {
     return {
-      showPassword: false,
-      username: "",
-      password: "",
-      showPassword: false,
-      valid: true,
-      sliDe: false,
-      nameRules: [(v) => !!v || "Digite o Nome!"],
-      passwordRules: [
-        (v) => !!v || "Digite a Senha!",
-        (v) => (v && v.length >= 6) || "Senha com menos de 6 caracteres!",
-      ],
-      loading: false,
+      name: "PageLogin",
+      email: '',
+      senha: '',
     };
   },
-    methods: {
-      mostrarOcultarSenha() {
-        this.showPassword = !this.showPassword;
-      },
-      try {
-          this.loading = true;
-        // eslint-disable-next-line no-undef
-          await login(body);
-          this.loading = false;
-          this.valid = true;
-          this.$router.push({ name: "sapienslogin" });
-          window.location.reload();
-        } catch (error) {
-          this.loading = false;
-          let message = await error.message;
-          this.valid = false;
-          this.$alert(message, "Error", "error", {
-          confirmButtonText: "Got it!",
-        });
-      }
-    }
-  }
-}
+  methods: {
+    loginUsuario() {
+      console.log('Email:', this.email);
+      console.log('Senha:', this.senha);
+      console.log("jkjdjkSKJDK")
+
+      this.$router.push({ name: 'PageLoginSapiens' });
+    },
+  },
+};
+
+//export default{
+ // name: "PageLogin",
+ // methods: {
+ //   LoginUsuario(){
+ //     console.log("jkjdjkSKJDK")
+ //   }
+ // }
+//}
 
 </script>
   
-  <style lang="scss" scoped>
+<style lang="scss" scoped>
     .wrapper {
       position: relative;
       width: 768px;
