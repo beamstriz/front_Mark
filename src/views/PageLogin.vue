@@ -38,10 +38,10 @@
 
       </div>
     </article>
-
-  </template>
+</template>
 
 <script>
+//import { login } from "@/api/controleUsuario/login"
 
 export default {
   data() {
@@ -49,28 +49,28 @@ export default {
       name: "PageLogin",
       email: '',
       senha: '',
+      permitirLogin: true,
     };
   },
   methods: {
-    loginUsuario() {
-      console.log('Email:', this.email);
-      console.log('Senha:', this.senha);
-      console.log("jkjdjkSKJDK")
+    async loginUsuario() {
+      // try {
+      //   const response = await login ({
+      //     email: this.email,
+      //     senha: this.senha,
+      //   });
 
-      this.$router.push({ name: 'PageLoginSapiens' });
+        // console.log(response)
+
+        console.log("Método (loginUsuarioMark) chamado com sucesso")
+
+        this.$router.push({ name: 'PageLoginSapiens' });
+      // } catch (error) {
+      //   console.error('erro no login', error.message)
+      // }
     },
   },
 };
-
-//export default{
- // name: "PageLogin",
- // methods: {
- //   LoginUsuario(){
- //     console.log("jkjdjkSKJDK")
- //   }
- // }
-//}
-
 </script>
   
 <style lang="scss" scoped>
@@ -230,7 +230,7 @@ export default {
     }
     @keyframes show {
       0% {
-        opacity: 0;
+        
         z-index: 1;
       }
       49% {
