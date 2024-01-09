@@ -1,5 +1,4 @@
-import axios_controle_usuario from "./visao/Api_axios_visao" 
-
+import { axios_controle_usuario } from "@/api/visao/Api_axios_visao";
  export async function login(body) {
      try {
          const res = await axios_controle_usuario.post(`/create/users`, body);
