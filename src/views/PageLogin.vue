@@ -15,7 +15,7 @@
         </div>
 
         
-        <form class="cadastrar-se" action="#">
+        <form class="cadastrar-se" action="#" @submit.prevent=cadastrarUsuario>
           <h2>MARK</h2>
           <div>Preecha com seus dados </div>
           <input type="text" placeholder="Nome" />
@@ -41,7 +41,8 @@
 </template>
 
 <script>
-//import { login } from "@/api/controleUsuario/login"
+import { login } from "@/api/controleUsuario/login"
+import { cadastrarUsuario } from '@/api/controleUsuario/cadastrarUsuario'
 
 export default {
   data() {
@@ -50,25 +51,42 @@ export default {
       email: '',
       senha: '',
       permitirLogin: true,
+      sliDe: false
     };
   },
   methods: {
     async loginUsuario() {
-      // try {
-      //   const response = await login ({
-      //     email: this.email,
-      //     senha: this.senha,
-      //   });
+       try {
+         const response = await login ({
+           email: this.email,
+           senha: this.senha,
+         });
 
-        // console.log(response)
+         console.log(response)
 
         console.log("Método (loginUsuarioMark) chamado com sucesso")
 
         this.$router.push({ name: 'PageLoginSapiens' });
-      // } catch (error) {
-      //   console.error('erro no login', error.message)
-      // }
+       } catch (error) {
+         console.error('erro no login', error.message)
+       }
     },
+    
+    async cadastrarUsuario() {
+      try {
+        const response = await cadastrarUsuario({
+          nome: this.nome,
+          email: this.email,
+          senha: this.senha
+        })
+
+        console.log(response)
+
+
+      } catch (error) {
+        console.error('erro no cadastro', error.message)
+      }
+    }
   },
 };
 </script>

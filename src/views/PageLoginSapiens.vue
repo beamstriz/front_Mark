@@ -25,30 +25,31 @@ export default {
   
   methods: {
     async loginUsuarioSapiens() {
-      let body = {
-       cpf: this.cpf,
-       senha: this.senha
-      };
+        let body = {
+         cpf: this.cpf,
+         senha: this.senha,
+        };
+       this.$router.push({ name: 'HomeView' });
 
 
-      try {
-        console.log("Enviando requisição para verificar usuário")
-        const usuarioExiste = await VerificarUserSapiens(body);
-        console.log("Usuário existe?", usuarioExiste);
+       try {
+         console.log("Enviando requisição para verificar usuário")
+         const usuarioExiste = await VerificarUserSapiens(body);
+         console.log("Usuário existe?", usuarioExiste);
 
 
         
-        if (usuarioExiste) {
-          console.log("Usuário autenticado com sucesso");
-          localStorage.setItem("sapiensCPF", body.cpf);
-          localStorage.setItem("sapiensSenha", body.senha);
-          this.$router.push({ name: 'HomeView' });
-        } else {
-                console.log("Usuário não existe ou credenciais inválidas");
-        }
-      } catch (error) {
-          console.error('erro no login', error.message)
-      }
+         if (usuarioExiste) {
+           console.log("Usuário autenticado com sucesso");
+           localStorage.setItem("sapiensCPF", body.cpf);
+           localStorage.setItem("sapiensSenha", body.senha);
+           this.$router.push({ name: 'HomeView' });
+         } else {
+                 console.log("Usuário não existe ou credenciais inválidas");
+         }
+       } catch (error) {
+           console.error('erro no login', error.message)
+       }
     },
   },
 };
