@@ -3,8 +3,8 @@
       <div class="wrapper">
         <form class="entrar" @submit.prevent="loginUsuarioSapiens">
           <h2>Login Sapiens</h2>
-          <input type="cpf" v-model="cpf" placeholder="CPF" />
-          <input type="senha" v-model="senha" placeholder="Senha" />
+          <input type="text" v-model="username" placeholder="E-mail" />
+          <input type="password" v-model="password" placeholder="Senha" />
           <button type="submit">Entrar</button>
         </form>
       </div>
@@ -16,33 +16,21 @@ import { VerificarUserSapiens } from '@/api/verificadorSapiens/user';
 
 export default {
   name: "PageLoginSapiens",
-  data: () => {
-    return {
-      cpf: "",
-      senha: "",
-    };
-  },
-  
+
   methods: {
     async loginUsuarioSapiens() {
-        let body = {
-         cpf: this.cpf,
-         senha: this.senha,
+        let data = {
+         username: this.username,
+         password: this.password,
         };
-       this.$router.push({ name: 'HomeView' });
-
 
        try {
-         console.log("Enviando requisição para verificar usuário")
-         const usuarioExiste = await VerificarUserSapiens(body);
-         console.log("Usuário existe?", usuarioExiste);
+         const usuarioExiste = await VerificarUserSapiens(data);
 
-
-        
-         if (usuarioExiste) {
+         if (!usuarioExiste) {
            console.log("Usuário autenticado com sucesso");
-           localStorage.setItem("sapiensCPF", body.cpf);
-           localStorage.setItem("sapiensSenha", body.senha);
+           localStorage.setItem("sapiensEmail", data.username);
+           localStorage.setItem("sapiensSenha", data.password);
            this.$router.push({ name: 'HomeView' });
          } else {
                  console.log("Usuário não existe ou credenciais inválidas");

@@ -18,9 +18,9 @@
         <form class="cadastrar-se" action="#" @submit.prevent=cadastrarUsuario>
           <h2>MARK</h2>
           <div>Preecha com seus dados </div>
-          <input type="text" placeholder="Nome" />
-          <input type="email" placeholder="Email" />
-          <input type="senha" placeholder="Senha" />
+          <input type="text" v-model="name" placeholder="Nome" />
+          <input type="email" v-model="email" placeholder="Email" />
+          <input type="password" v-model="password" placeholder="Senha" />
           <button>Cadastrar-se</button>
         </form>
 
@@ -29,7 +29,7 @@
           <h2>MARK</h2>
           <div>Para continuar, faça o seu login</div>
           <input type="email" v-model="email" placeholder="Email" />
-          <input type="senha" v-model="senha" placeholder="Senha" />
+          <input type="password" v-model="password" placeholder="Senha" />
         
           <a href="#">Esqueceu a senha?</a>
 
@@ -47,9 +47,6 @@ import { cadastrarUsuario } from '@/api/controleUsuario/cadastrarUsuario'
 export default {
   data() {
     return {
-      name: "PageLogin",
-      email: '',
-      senha: '',
       permitirLogin: true,
       sliDe: false
     };
@@ -59,32 +56,34 @@ export default {
        try {
          const response = await login ({
            email: this.email,
-           senha: this.senha,
+           password: this.password,
          });
 
+         if (response && response.data && response.data.access_token) {
+          localStorage.setItem('authToken', response.data.access_token);
+         }
+
          console.log(response)
+        
+         this.$router.push({ name: 'PageLoginSapiens' });
 
-        console.log("Método (loginUsuarioMark) chamado com sucesso")
-
-        this.$router.push({ name: 'PageLoginSapiens' });
        } catch (error) {
-         console.error('erro no login', error.message)
+         console.error('erro no login', error.message);
        }
     },
     
     async cadastrarUsuario() {
       try {
         const response = await cadastrarUsuario({
-          nome: this.nome,
+          name: this.name,
           email: this.email,
-          senha: this.senha
-        })
+          password: this.password
+        });
 
-        console.log(response)
-
+        console.log(response);
 
       } catch (error) {
-        console.error('erro no cadastro', error.message)
+        console.error('erro no cadastro', error.message);
       }
     }
   },
