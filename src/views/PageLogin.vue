@@ -14,7 +14,7 @@
           </div>
         </div>
 
-        
+
         <form class="cadastrar-se" action="#" @submit.prevent=cadastrarUsuario>
           <h2>MARK</h2>
           <div>Preecha com seus dados </div>
@@ -24,12 +24,12 @@
           <button>Cadastrar-se</button>
         </form>
 
-
+        <!-- TELA DE LOGIN DO MARK -->
         <form class="entrar" @submit.prevent=loginUsuario>
           <h2>MARK</h2>
           <div>Para continuar, faça o seu login</div>
-          <input type="email" v-model="email" placeholder="Email" />
-          <input type="password" v-model="password" placeholder="Senha" />
+          <input type="email" v-model="email" placeholder="Email" :rules="emailRules" />
+          <input type="password" v-model="password" placeholder="Senha" :rules="passwordRules" />
         
           <a href="#">Esqueceu a senha?</a>
 
@@ -48,7 +48,13 @@ export default {
   data() {
     return {
       permitirLogin: true,
-      sliDe: false
+      sliDe: false,
+      emailRules:  [
+        (v) => !!v || "Digite o e-mail!"],
+        passwordRules: [
+          (v) => !!v || "Digite a senha!",
+          (v) => (v && v.length >= 6) || "Senha com menos de 6 caracteres!"
+        ],
     };
   },
   methods: {
@@ -97,8 +103,8 @@ export default {
       height: 480px;
       border-radius: 10px;
       overflow: hidden;
-      box-shadow: 0 10px 20px #8B0000, 0 10px 10px #8B0000;
-      background: linear-gradient(to bottom, #FFD700, #8B0000);
+      box-shadow: 0 10px 20px #0F377F, 0 10px 10px #0F377F;
+      background: linear-gradient(to bottom, #FFD700, white);
       
       .overlay-wrapper {
         position: absolute;
@@ -115,8 +121,8 @@ export default {
         left: -100%;
         height: 100%;
         width: 200%;
-        background: #8B0000;
-        color: #fff;
+        background:  linear-gradient(to bottom, #009A3E, white);
+        color: black;
         transform: translateX(0);
         transition: transform .5s ease-in-out;
       }
@@ -159,26 +165,38 @@ export default {
     }
     button {
       border-radius: 20px;
-      border: 1px solid #fff;
-      background-color: transparent;    
-      color: #fff;
+      border: 1px solid white;
+      background-color: #405992;    
+      color: white;
       font-size: 1rem;
       font-weight: bold;
       padding: 10px 40px;
       letter-spacing: 1px;
       text-transform: uppercase;
       cursor: pointer;
-      transition: transform .1s ease-in;
+      transition: background-color 0.2s, transform 0.1s ease-in;
+      
+      &:hover {
+          background-color: #546da8;
+        }
+
       &:active {
         transform: scale(.9);
       }
+
       &:focus {
         outline: none;
       }
+      
     }
     button.inverter {
-      background-color: transparent;
-      border-color: #fff;
+      background-color: #405992;
+      border-color: white;
+      transition: background-color 0.2s, transform 0.1s ease-in;
+
+      &:hover {
+          background-color: #546da8;
+        }
       
     }
     form {
@@ -192,7 +210,7 @@ export default {
       width: calc(50% - 120px);
       height: calc(100% - 180px);
       text-align: center;
-      background: linear-gradient(to bottom, #FFD700, #8B0000);
+      background: linear-gradient(to bottom, #FFD700, white);
       transition: all .5s ease-in-out;
       div {
         font-size: 1rem;

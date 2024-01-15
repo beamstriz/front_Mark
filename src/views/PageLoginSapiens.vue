@@ -2,7 +2,7 @@
     <article>
       <div class="wrapper">
         <form class="entrar" @submit.prevent="loginUsuarioSapiens">
-          <h2>Login Sapiens</h2>
+          <h2>Login Super Sapiens</h2>
           <input type="text" v-model="username" placeholder="E-mail" />
           <input type="password" v-model="password" placeholder="Senha" />
           <button type="submit">Entrar</button>
@@ -26,7 +26,7 @@ export default {
 
        try {
          const usuarioExiste = await VerificarUserSapiens(data);
-
+        console.log("passou")
          if (!usuarioExiste) {
            console.log("Usuário autenticado com sucesso");
            localStorage.setItem("sapiensEmail", data.username);
@@ -51,8 +51,8 @@ export default {
     height: 480px;
     border-radius: 10px;
     overflow: hidden;
-    box-shadow: 0 10px 20px #8B0000, 0 10px 10px #8B0000;
-    background: linear-gradient(to bottom, #FFD700, #8B0000);
+    box-shadow: 0 10px 20px #0F377F, 0 10px 10px #0F377F;
+    background: linear-gradient(to bottom, #FFD700, white);
 
     form.entrar {
       position: absolute;
@@ -104,7 +104,7 @@ export default {
       button {
         border-radius: 20px;
         border: 1px solid white;
-        background-color: transparent;
+        background-color: #405992;
         color: #fff;
         font-size: 1rem;
         font-weight: bold;
@@ -115,7 +115,7 @@ export default {
         transition: background-color 0.2s, transform 0.1s ease-in;
 
         &:hover {
-          background-color: #8B0000;
+          background-color: #546da8;
         }
 
         &:active {
