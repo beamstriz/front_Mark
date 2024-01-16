@@ -16,7 +16,7 @@
     "sass": "^1.69.5",
     "vue": "^3.2.13",
     "vue-router": "^4.0.13",
-    "vuetify": "^3.4.7",
+    "vuetify": "^3.4.10",
     "webfontloader": "^1.0.0"
   },
   "devDependencies": {

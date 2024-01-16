@@ -49,12 +49,6 @@ export default {
     return {
       permitirLogin: true,
       sliDe: false,
-      emailRules:  [
-        (v) => !!v || "Digite o e-mail!"],
-        passwordRules: [
-          (v) => !!v || "Digite a senha!",
-          (v) => (v && v.length >= 6) || "Senha com menos de 6 caracteres!"
-        ],
     };
   },
   methods: {

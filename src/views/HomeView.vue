@@ -1,11 +1,13 @@
 <template>
-    <div class="cor">
-        <h2>oi</h2>
-    </div>
+  <v-app>
+    <v-container>
+      <h1>Olá, mundo!</h1>
+    </v-container>
+  </v-app>
 </template>
 
-<style>
-.cor {
-    color: white
-}
-</style>
+<script setup>
+
+</script>
+
+
