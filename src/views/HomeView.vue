@@ -32,52 +32,37 @@
     <v-main>
       <v-container>
         <h3>Olá, usuário!</h3>
-        <v-card title="Gerar pesquisa"><v-divider></v-divider>
-          <!-- Botão Observação -->
-          
-            <v-row align-lg="center">
-              <v-dialog
-                v-model="dialog"
-                scrollable
-                width="auto"
-                >
-                  <template v-slot:activator="{ props }">
-                   <v-btn
-                     color="primary"
-                     v-bind="props"
-                     >
-                      Selecionar Observação
-                    </v-btn>
-                  </template>
-                  <v-card>
-                    <v-card-title>Selecione a Observação</v-card-title>
-                    <v-divider></v-divider>
-                    <v-card-text style="height 300px">
-                      <v-radio-group
-                        v-model="dialog"
-                        column
-                        >
-                        <v-radio
-                          label="Brasil"
-                          value="brasil"
-                        ></v-radio>
-                      </v-radio-group>
-                    </v-card-text>
+        <v-card title="Gerar pesquisa">
+          <v-divider></v-divider>
+          <br>
 
-                    <v-card-actions>
-                      <v-btn
-                        color="blue-darken"
-                        variant="text"
-                        @click="dialog = false"
-                      >
-                        Salvar
-                      </v-btn>
-                    </v-card-actions>
-                  </v-card>
-                </v-dialog>
-            </v-row>
-          
-          
+          <!-- BOTÃO OBSERVAÇÃO -->
+          <div class="first-Part">
+            <div class="observacao">
+              <v-autocomplete
+                label="Selecionar Observação"
+                :items="['Brasil', 'Pará', 'Ananindeua', 'Ver-o-peso']"
+                style="margin: 16px 10px 0px 10px">
+              </v-autocomplete>
+              <v-btn icon="mdi-plus" variant="tonal" color="blue" style="margin: 20px 7px 0px 10px;"></v-btn>
+            </div>
+
+
+            <div class="observacao">
+              <v-btn prepend-icon="mdi-play" style="background-color: rgb(157, 247, 115);">
+                Iniciar
+              </v-btn>
+
+              <v-btn prepend-icon="mdi-delete" style="background-color: rgb(241, 230, 106); margin-left:50px">
+                Limpar
+              </v-btn>
+
+              <v-btn prepend-icon="mdi-close" style="background-color: rgb(241, 106, 106); margin-left:50px">
+                Parar
+              </v-btn>
+            </div>
+        </div>
+            <br>
         </v-card>
       </v-container>
     </v-main>
@@ -92,6 +77,8 @@ import { ref } from 'vue';
 export default {
   data() {
     return {
+      dialogm1: '',
+      dialog: false,
       tema: "light"
     };
   }
@@ -108,8 +95,19 @@ const Menuaberto = ref(false);
 </script>
 
 <style>
-.aviso {
-  color: red
+.first-Part {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  margin: 5px 20px;
 }
+
+.observacao {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
 </style>
 
