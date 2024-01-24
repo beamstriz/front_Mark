@@ -16,82 +16,141 @@
       <template #append>
         <!-- AVATAR -->
         <v-avatar color="#BDBDBD">
-          <v-img cover
-          src=""
+        <v-img cover
+          src="src/assets/logo-agu.jpg"
           alt="Foto do usuário"
         ></v-img>
         </v-avatar>
 
         <v-btn icon>
-            <v-icon icon="mdi-logout"></v-icon>
+            <v-icon icon="mdi-logout" color="red"></v-icon>
         </v-btn>
       </template>
     </v-app-bar>
 
     <!-- DASHBOARD -->
-    <v-main>
+    <v-main style="background-color: #fafafa">
       <v-container>
         <h3>Olá, usuário!</h3>
-        <v-card title="Gerar pesquisa">
-          <v-divider></v-divider>
-          <br>
+        <v-card title="Gerar pesquisa"></v-card>
+          
 
-          <!-- BOTÃO OBSERVAÇÃO -->
-          <div class="first-Part">
+          <!-- INPUT DO TERMO DE PESQUISA -->
+          <v-card style="margin-top: 15px;">
+            <div class="first-Part">
+                <v-form @submit.prevent>
+                  <v-text-field
+                    v-model="itemPesquisa"
+                    :rules="itemRules"
+                    label="Item de Pesquisa"
+                    style="margin: 16px 10px 0px 10px"
+                  ></v-text-field>
+                </v-form>
+
+                  <!-- SELECIONAR OBSERVAÇÃO -->
+                  <v-autocomplete
+                    label="Selecionar Observação"
+                    :items="['Brasil', 'Pará', 'Ananindeua', 'Ver-o-peso']"
+                    style="margin: 16px 10px 0px 10px">
+                  </v-autocomplete>
+             </div>
+           </v-card>
+
+              <!-- RENDERIZAR CARDS DINAMICAMENTE -->
+              <div v-for="(card, index) in cards" :key="index">
+                <v-card style="margin-top: 15px;">
+                  <div class="first-Part">
+                    <v-form @submit.prevent>
+                      <div class="apagarCards">
+                        <v-icon color="red" icon="mdi-minus" size="x-small" id="btn-plus" @click="apagarCard(index)"></v-icon>
+                      </div>
+                      <v-text-field
+                        v-model="card.itemPesquisa"
+                        :rules="itemRules"
+                        label="Item de pesquisa"
+                        style="margin: 16px 10px 0px 10px;">
+                      </v-text-field>
+                    </v-form>
+                    
+                    <v-autocomplete
+                      label="Selecionar Observação"
+                      :items="['Brasil', 'Pará', 'Ananindeua', 'ver-o-peso']"
+                      v-model="card.observacao"
+                      style="margin: 16px 10px 0px 10px;">
+                    </v-autocomplete>
+                  </div>
+                </v-card>
+              </div>
+
+        <!-- BOTÕES DE AÇÃO  -->
             <div class="observacao">
-              <v-autocomplete
-                label="Selecionar Observação"
-                :items="['Brasil', 'Pará', 'Ananindeua', 'Ver-o-peso']"
-                style="margin: 16px 10px 0px 10px">
-              </v-autocomplete>
-              <v-btn icon="mdi-plus" variant="tonal" color="blue" style="margin: 20px 7px 0px 10px;"></v-btn>
+              <div>
+                <v-btn prepend-icon="mdi-play" style="background-color: rgb(157, 247, 115);">
+                  Iniciar
+                </v-btn>
+
+                <v-btn prepend-icon="mdi-delete" style="background-color: rgb(241, 230, 106); margin-left:50px" @click="limparInputs">
+                  Limpar
+                </v-btn>
+
+                <v-btn prepend-icon="mdi-close" style="background-color: rgb(241, 106, 106); margin-left:50px">
+                  Parar
+                </v-btn>
+              </div>
+              
+              <v-icon color="blue" icon="mdi-plus" size="x-small" id="btn-plus" @click="gerarNovoCard"></v-icon>
+                <v-tooltip activator="#btn-plus">
+                  Clique aqui para gerar nova pesquisa.
+                </v-tooltip>
             </div>
 
-
-            <div class="observacao">
-              <v-btn prepend-icon="mdi-play" style="background-color: rgb(157, 247, 115);">
-                Iniciar
-              </v-btn>
-
-              <v-btn prepend-icon="mdi-delete" style="background-color: rgb(241, 230, 106); margin-left:50px">
-                Limpar
-              </v-btn>
-
-              <v-btn prepend-icon="mdi-close" style="background-color: rgb(241, 106, 106); margin-left:50px">
-                Parar
-              </v-btn>
-            </div>
-        </div>
-            <br>
-        </v-card>
+            
       </v-container>
     </v-main>
- 
-
   </v-app>
 </template>
 
 <script>
-import { ref } from 'vue';
 
 export default {
   data() {
     return {
+      Menuaberto: false,
+      valid: false,
+      termoPesquisa:'',
       dialogm1: '',
       dialog: false,
-      tema: "light"
-    };
+      cards: [],
+      itemPesquisa: '',
+      itemRules: [
+        value => {
+          if (value) return true
+          return 'Campo obrigatório!'
+        }
+      ],
+    }
+  },
+  methods: {
+    gerarNovoCard() {
+      this.cards.push({
+        itemPesquisa: '',
+        observacao: ''
+      })
+    },
+
+    limparInputs() {
+      this.itemPesquisa = ''
+      for (let i = 0; i < this.cards.length; i++) {
+        this.cards[i].itemPesquisa = '';
+      }
+    },
+
+    apagarCard(index) {
+      this.cards.splice(index, 1);
+    }
   }
 };
 
-const Menuaberto = ref(false);
-
-
-</script>
-
-<script setup>
-
-// const Menuaberto = ref(value: false)
 </script>
 
 <style>
@@ -99,15 +158,20 @@ const Menuaberto = ref(false);
   display: flex;
   flex-direction: column;
   justify-content: center;
-
   margin: 5px 20px;
 }
 
 .observacao {
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: space-between;
+  margin-top:15px;
 }
 
+.apagarCards {
+  display: flex;
+  justify-content: end;
+  padding-top: 5px;
+}
 </style>
 

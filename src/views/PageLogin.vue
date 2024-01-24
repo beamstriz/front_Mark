@@ -18,7 +18,7 @@
         <form class="cadastrar-se" action="#" @submit.prevent=cadastrarUsuario>
           <h2>MARK</h2>
           <div>Preecha com seus dados </div>
-          <input type="text" v-model="name" placeholder="Nome" />
+          <input type="text" v-model="name" placeholder="Primeiro Nome" />
           <input type="email" v-model="email" placeholder="Email" />
           <input type="password" v-model="password" placeholder="Senha" />
           <button>Cadastrar-se</button>
