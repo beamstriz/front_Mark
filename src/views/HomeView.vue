@@ -31,21 +31,24 @@
     <!-- DASHBOARD -->
     <v-main style="background-color: #fafafa">
       <v-container>
-        <h3>Olá, usuário!</h3>
+        <h3>Olá, {{ nomeUsuario }}!</h3>
         <v-card title="Gerar pesquisa"></v-card>
           
 
           <!-- INPUT DO TERMO DE PESQUISA -->
           <v-card style="margin-top: 15px;">
             <div class="first-Part">
+              <div class="input-date">
                 <v-form @submit.prevent>
                   <v-text-field
                     v-model="itemPesquisa"
                     :rules="itemRules"
                     label="Item de Pesquisa"
-                    style="margin: 16px 10px 0px 10px"
+                    style="margin: 16px 10px 0px 10px; width: 1500%;"
                   ></v-text-field>
                 </v-form>
+                <input type="date" v-model="data" class="inputDate" placeholder="Data">
+              </div>
 
                   <!-- SELECIONAR OBSERVAÇÃO -->
                   <v-autocomplete
@@ -60,17 +63,21 @@
               <div v-for="(card, index) in cards" :key="index">
                 <v-card style="margin-top: 15px;">
                   <div class="first-Part">
-                    <v-form @submit.prevent>
-                      <div class="apagarCards">
-                        <v-icon color="red" icon="mdi-minus" size="x-small" id="btn-plus" @click="apagarCard(index)"></v-icon>
-                      </div>
-                      <v-text-field
-                        v-model="card.itemPesquisa"
-                        :rules="itemRules"
-                        label="Item de pesquisa"
-                        style="margin: 16px 10px 0px 10px;">
-                      </v-text-field>
-                    </v-form>
+                    <div class="apagarCards">
+                      <v-icon color="red" icon="mdi-minus" size="x-small" id="btn-plus" @click="apagarCard(index)"></v-icon>
+                    </div>
+                    <div class="input-date">
+                      <v-form @submit.prevent>
+                        <v-text-field
+                          v-model="card.itemPesquisa"
+                          :rules="itemRules"
+                          label="Item de pesquisa"
+                          style="margin: 16px 10px 0px 10px; width: 1500%;">
+                        </v-text-field>
+                      </v-form>
+                      <input type="date" v-model="data" class="inputDate" placeholder="Data">
+                    </div>
+                    
                     
                     <v-autocomplete
                       label="Selecionar Observação"
@@ -103,14 +110,14 @@
                   Clique aqui para gerar nova pesquisa.
                 </v-tooltip>
             </div>
-
-            
+  
       </v-container>
     </v-main>
   </v-app>
 </template>
 
 <script>
+import { axios_controle_usuario } from '@/api/visao/Api_axios_visao';
 
 export default {
   data() {
@@ -121,6 +128,7 @@ export default {
       dialogm1: '',
       dialog: false,
       cards: [],
+      nomeUsuario: '',
       itemPesquisa: '',
       itemRules: [
         value => {
@@ -148,6 +156,21 @@ export default {
     apagarCard(index) {
       this.cards.splice(index, 1);
     }
+    
+  },
+  mounted() {
+    const token = localStorage.getItem("token");
+    axios_controle_usuario.get("/get/user", {
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
+    })
+    .then((res) => {
+      this.nomeUsuario = res.data.name;
+    })
+    .catch((err) => {
+      console.log("Erro ao obter as informações do usuario: ", err);
+    });
   }
 };
 
@@ -159,6 +182,18 @@ export default {
   flex-direction: column;
   justify-content: center;
   margin: 5px 20px;
+}
+
+.input-date {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.inputDate {
+  margin-right: 50px;
+  font-size: 0.95em;
+  color: gray
 }
 
 .observacao {
