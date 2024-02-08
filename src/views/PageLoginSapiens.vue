@@ -51,8 +51,8 @@ export default {
     height: 480px;
     border-radius: 10px;
     overflow: hidden;
-    box-shadow: 0 10px 20px #0F377F, 0 10px 10px #0F377F;
-    background: linear-gradient(to bottom, #FFD700, white);
+    box-shadow: 0 10px 20px whitesmoke, 0 10px 10px black;
+    background: linear-gradient(to bottom, #CFD8DC, white);
 
     form.entrar {
       position: absolute;
@@ -83,6 +83,7 @@ export default {
         border: none;
         padding: 8px 15px;
         margin: 6px 0;
+        font-size: 1rem;
         width: 100%;
         border-radius: 15px;
         border-bottom: 1px solid #ddd;

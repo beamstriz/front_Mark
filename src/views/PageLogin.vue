@@ -97,8 +97,9 @@ export default {
       height: 480px;
       border-radius: 10px;
       overflow: hidden;
-      box-shadow: 0 10px 20px #0F377F, 0 10px 10px #0F377F;
-      background: linear-gradient(to bottom, #FFD700, white);
+      box-shadow: 0 10px 20px whitesmoke, 0 10px 10px black;
+      // #0F377F
+      background: linear-gradient(to bottom, #CFD8DC, white);
       
       .overlay-wrapper {
         position: absolute;
@@ -110,19 +111,17 @@ export default {
         transition: transform .5s ease-in-out;
         z-index: 100;
       }
+      // tela cadastro
       .overlay {
         position: relative;
         left: -100%;
         height: 100%;
         width: 200%;
-        background:  linear-gradient(to bottom, #009A3E, white);
+        background:  linear-gradient(to bottom, #B0BEC5, white);
         color: black;
         transform: translateX(0);
         transition: transform .5s ease-in-out;
       }
-  
-    /* @mixin include sobre os overlays esquerdo e direito */
-  
       @mixin overlays($property) {
         position: absolute;
         top: 0;
@@ -131,8 +130,8 @@ export default {
         justify-content: space-around;
         flex-direction: column;
         padding: 70px 40px;
-        width: calc(50% - 80px);
-        height: calc(100% - 140px);
+        width: calc(50%);
+        height: calc(100%);
         text-align: center;
         transform: translateX($property);
         transition: transform .5s ease-in-out;
@@ -193,6 +192,7 @@ export default {
         }
       
     }
+    // tela de login
     form {
       position: absolute;
       top: 0;
@@ -201,10 +201,10 @@ export default {
       justify-content: space-around;
       flex-direction: column;
       padding: 90px 60px;
-      width: calc(50% - 120px);
-      height: calc(100% - 180px);
+      width: calc(50%);
+      height: calc(100%);
       text-align: center;
-      background: linear-gradient(to bottom, #FFD700, white);
+      background: linear-gradient(to bottom, #CFD8DC, white);
       transition: all .5s ease-in-out;
       div {
         font-size: 1rem;
@@ -212,16 +212,18 @@ export default {
       input {
         background-color: #eee;
         border: none;
+        font-size: 1rem;
         padding: 8px 15px;
         margin: 6px 0;
         width: calc(100% - 30px);
+        height: calc(10%);
         border-radius: 15px;
         border-bottom: 1px solid #ddd;
        /* efeito transição de cor sobre os campos do formulário*/
         overflow: hidden;
         &:focus {
           outline: none;
-          background-color: #fff;
+          background-color: #ECEFF1;
         }
       }
     }

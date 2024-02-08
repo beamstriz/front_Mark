@@ -14,16 +14,8 @@
       <v-app-bar-title><img src="@/assets/logo-agu.png" width="110px" height="77px" style="display: block; margin: auto;"/></v-app-bar-title>
 
       <template #append>
-        <!-- AVATAR -->
-        <v-avatar color="#BDBDBD">
-        <v-img cover
-          src="src/assets/logo-agu.jpg"
-          alt="Foto do usuário"
-        ></v-img>
-        </v-avatar>
-
-        <v-btn icon>
-            <v-icon icon="mdi-logout" color="red"></v-icon>
+        <v-btn icon @click="sair">
+            <v-icon icon="mdi-logout" color="red" ></v-icon>
         </v-btn>
       </template>
     </v-app-bar>
@@ -31,68 +23,140 @@
     <!-- DASHBOARD -->
     <v-main style="background-color: #fafafa">
       <v-container>
-        <h3>Olá, {{ nomeUsuario }}!</h3>
+        <h3>Olá, usuário!</h3>
         <v-card title="Gerar pesquisa"></v-card>
           
 
           <!-- INPUT DO TERMO DE PESQUISA -->
           <v-card style="margin-top: 15px;">
-            <div class="first-Part">
-              <div class="input-date">
-                <v-form @submit.prevent>
-                  <v-text-field
-                    v-model="itemPesquisa"
-                    :rules="itemRules"
-                    label="Item de Pesquisa"
-                    style="margin: 16px 10px 0px 10px; width: 1500%;"
-                  ></v-text-field>
-                </v-form>
-                <input type="date" v-model="data" class="inputDate" placeholder="Data">
-              </div>
+            <div class="first-Part" style="border: solid firebrick;">
+              <div class="column" style="border: solid hotpink;">
+                  <v-sheet width="330" class="mx-auto">
+                    <v-form @submit.prevent>
+                      <v-text-field
+                        v-model="conteudoPesquisa"
+                        :rules="rules"
+                        label="Conteúdo de pesquisa"
+                        @input="transformarParaMaiuscula"
+                      ></v-text-field>
+                    </v-form>
+                  </v-sheet>
 
-                  <!-- SELECIONAR OBSERVAÇÃO -->
-                  <v-autocomplete
-                    label="Selecionar Observação"
-                    :items="['Brasil', 'Pará', 'Ananindeua', 'Ver-o-peso']"
-                    style="margin: 16px 10px 0px 10px">
-                  </v-autocomplete>
-             </div>
-           </v-card>
+                  <v-sheet width="330" class="mx-auto">
+                    <v-form @submit.prevent>
+                      <v-text-field
+                        v-model="relatorioPesquisa"
+                        :rules="rules"
+                        label="Movimentação"
+                        @input="transformarParaMaiuscula"
+                      ></v-text-field>
+                    </v-form>
+                  </v-sheet>
+
+                  <div class="itemData">
+                    <input type="date" v-model="data" class="inputDate" placeholder="Data">
+                  </div>
+                </div>
+
+                <div class="column">
+                  <v-sheet width="330" class="mx-auto">
+                    <v-form @submit.prevent>
+                      <v-text-field
+                        v-model="tituloPesquisa"
+                        :rules="itemRules"
+                        label="String Busca"
+                        @input="transformarParaMaiuscula"
+                      ></v-text-field>
+                    </v-form>
+                  </v-sheet>
+
+                  <v-sheet width="330" class="mx-auto">
+                    <v-form @submit.prevent>
+                      <v-text-field
+                        v-model="observacaoPesquisa"
+                        :rules="rules"
+                        label="Observação"
+                        @input="transformarParaMaiuscula"
+                      ></v-text-field>
+                    </v-form>
+                  </v-sheet>
+                </div>
+
+                <div class="column">
+                  <v-sheet width="330" class="mx-auto">
+                    <v-form @submit.prevent>
+                      <v-text-field
+                        v-model="novaObservacao"
+                        :rules="rules"
+                        label="Nova Observação"
+                        @input="transformarParaMaiuscula"
+                      ></v-text-field>
+                    </v-form>
+                  </v-sheet>
+                </div>
+              </div>
+            </v-card>
 
               <!-- RENDERIZAR CARDS DINAMICAMENTE -->
               <div v-for="(card, index) in cards" :key="index">
                 <v-card style="margin-top: 15px;">
                   <div class="first-Part">
-                    <div class="apagarCards">
-                      <v-icon color="red" icon="mdi-minus" size="x-small" id="btn-plus" @click="apagarCard(index)"></v-icon>
-                    </div>
-                    <div class="input-date">
-                      <v-form @submit.prevent>
-                        <v-text-field
-                          v-model="card.itemPesquisa"
-                          :rules="itemRules"
-                          label="Item de pesquisa"
-                          style="margin: 16px 10px 0px 10px; width: 1500%;">
-                        </v-text-field>
-                      </v-form>
-                      <input type="date" v-model="data" class="inputDate" placeholder="Data">
-                    </div>
-                    
-                    
-                    <v-autocomplete
-                      label="Selecionar Observação"
-                      :items="['Brasil', 'Pará', 'Ananindeua', 'ver-o-peso']"
-                      v-model="card.observacao"
-                      style="margin: 16px 10px 0px 10px;">
-                    </v-autocomplete>
+              <div class="input-date">
+                
+                <div class="tituloPesquisa">
+                  <v-sheet width="300">
+                    <v-form @submit.prevent>
+                      <v-text-field
+                        v-model="tituloPesquisa"
+                        :rules="itemRules"
+                        label="Título de pesquisa"
+                      ></v-text-field>
+                    </v-form>
+                  </v-sheet>
+                  
+                  <div class="itemData">
+                    <input type="date" v-model="data" class="inputDate" placeholder="Data">
                   </div>
+                </div>
+                
+                <div class="inputRelatorio">
+                  <v-sheet width="300" class="mx-auto">
+                    <v-form @submit.prevent>
+                      <v-text-field
+                        v-model="conteudoPesquisa"
+                        :rules="rules"
+                        label="Conteúdo"
+                      ></v-text-field>
+                    </v-form>
+                  </v-sheet>
+
+                  <v-sheet width="300" class="mx-auto">
+                    <v-form @submit.prevent>
+                      <v-text-field
+                        v-model="relatorioPesquisa"
+                        :rules="rules"
+                        label="Movimentação"
+                      ></v-text-field>
+                    </v-form>
+                  </v-sheet>
+                  </div>
+              </div>
+
+                  <!-- SELECIONAR OBSERVAÇÃO -->
+                  <!-- <v-autocomplete
+                    v-model="observacaoPesquisa"
+                    label="Selecionar Observação"
+                   
+                    style="margin: 16px 10px 0px 10px">
+                  </v-autocomplete> -->
+              </div>
                 </v-card>
               </div>
 
         <!-- BOTÕES DE AÇÃO  -->
             <div class="observacao">
               <div>
-                <v-btn prepend-icon="mdi-play" style="background-color: rgb(157, 247, 115);">
+                <v-btn prepend-icon="mdi-play" style="background-color: rgb(157, 247, 115);" @click="enviarDadosPesquisa">
                   Iniciar
                 </v-btn>
 
@@ -118,6 +182,7 @@
 
 <script>
 import { axios_controle_usuario } from '@/api/visao/Api_axios_visao';
+import axios from 'axios';
 
 export default {
   data() {
@@ -129,7 +194,11 @@ export default {
       dialog: false,
       cards: [],
       nomeUsuario: '',
-      itemPesquisa: '',
+      tituloPesquisa: '',
+      conteudoPesquisa: '',
+      relatorioPesquisa: '',
+      observacaoPesquisa:'',
+      novaObservacao: '',
       itemRules: [
         value => {
           if (value) return true
@@ -139,24 +208,85 @@ export default {
     }
   },
   methods: {
+    sair(){
+      localStorage.clear();
+      this.$router.push({ name: 'PageLogin' });
+    },
     gerarNovoCard() {
       this.cards.push({
-        itemPesquisa: '',
+        tituloPesquisa: '',
         observacao: ''
       })
     },
 
     limparInputs() {
-      this.itemPesquisa = ''
+      this.tituloPesquisa = ''
       for (let i = 0; i < this.cards.length; i++) {
-        this.cards[i].itemPesquisa = '';
+        this.cards[i].tituloPesquisa = '';
       }
     },
 
     apagarCard(index) {
       this.cards.splice(index, 1);
+    },
+
+    transformarParaMaiuscula() {
+      this.tituloPesquisa = this.tituloPesquisa.toUpperCase();
+      this.conteudoPesquisa = this.conteudoPesquisa.toUpperCase();
+      this.relatorioPesquisa = this.relatorioPesquisa.toUpperCase();
+      this.observacaoPesquisa = this.observacaoPesquisa.toUpperCase();
+      this.novaObservacao = this.novaObservacao.toUpperCase();
+    },
+
+    enviarDadosPesquisa() {
+      console.log('título de pesquisa:', this.tituloPesquisa);
+      console.log('relatório de pesquisa:', this.relatorioPesquisa);
+      console.log('conteúdo de pesquisa:', this.conteudoPesquisa);
+      console.log('observação:', this.observacaoPesquisa);
+      console.log('nova observação:', this.novaObservacao);
+      
+      if (this.tituloPesquisa.length > 0){
+        const dados = {
+          email: localStorage.getItem('sapiensEmail'),
+          password: localStorage.getItem('sapiensSenha'),
+          observacao_sapiens: this.observacaoPesquisa,
+          movimentacao: [this.relatorioPesquisa],
+          conteudo: [this.conteudoPesquisa],
+          StringBusca: [this.tituloPesquisa],
+          stringObservacao: [this.novaObservacao],
+          timeCreationDocument: [null],
+          idUser: "8767"
+        };
+        console.log(dados);
+        axios.post('http://localhost:3000/page', dados).then((response) => {
+          console.log("Dados enviados com sucesso: ", response.data);
+        }).catch((err) => {
+        console.log("Erro ao enviar os dados: ", err.response.status);
+        })
+      } else {
+        console.log("oi")
+        const dados = {
+          email: localStorage.getItem('sapiensEmail'),
+          password: localStorage.getItem('sapiensSenha'),
+          observacao_sapiens: this.observacaoPesquisa,
+          movimentacao: this.relatorioPesquisa,
+          conteudo: this.conteudoPesquisa,
+      };
+      console.log(dados);
+      axios.post('http://localhost:3000/processos', dados).then((response) => {
+        console.log("Dados enviados com sucesso: ", response.data);
+       }).catch((err) => {
+        console.log("Erro ao enviar os dados: ", err.response.status);
+       })
+      }
+     
+      //   console.log("Dados enviados com sucesso: ", response.data);
+      // )};
+      // catch((error) => {
+      //   console.log("Erro ao enviar os dados: ", error);
+      // }),
+      // return response;
     }
-    
   },
   mounted() {
     const token = localStorage.getItem("token");
@@ -171,8 +301,13 @@ export default {
     .catch((err) => {
       console.log("Erro ao obter as informações do usuario: ", err);
     });
-  }
-};
+  },
+
+  observacaoPesquisaChange(event) {
+    this.observacao = event.target.value;
+  },
+  
+}
 
 </script>
 
@@ -180,20 +315,32 @@ export default {
 .first-Part {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  margin: 5px 20px;
+  margin: 10px 10px 10px 10px;
 }
 
 .input-date {
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  flex-direction: column;
 }
 
 .inputDate {
   margin-right: 50px;
   font-size: 0.95em;
-  color: gray
+  
+}
+
+.itemData {
+  margin: 23px 13px 0px 10px;
+}
+
+.inputRelatorio {
+  display: flex;
+  flex-direction: row;
+}
+
+.tituloPesquisa {
+  display: flex;
+  flex-direction: row;
 }
 
 .observacao {
@@ -201,6 +348,7 @@ export default {
   flex-direction: row;
   justify-content: space-between;
   margin-top:15px;
+
 }
 
 .apagarCards {
@@ -208,5 +356,6 @@ export default {
   justify-content: end;
   padding-top: 5px;
 }
+
 </style>
 
