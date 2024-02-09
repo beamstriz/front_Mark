@@ -32,14 +32,7 @@ export default {
         localStorage.setItem("sapiensSenha", data.password);
         this.$router.push({ name: 'HomeView' });
         console.log(usuarioExiste)
-         /* if (!usuarioExiste) {
-           console.log("Usuário autenticado com sucesso");
-           localStorage.setItem("sapiensEmail", data.username);
-           localStorage.setItem("sapiensSenha", data.password);
-           this.$router.push({ name: 'HomeView' });
-         } else {
-                 console.log("Usuário não existe ou credenciais inválidas");
-         } */
+
        } catch (error) {
         Swal.fire({
         icon: "error",

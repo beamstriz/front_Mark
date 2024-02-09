@@ -28,20 +28,79 @@
           
 
           <!-- INPUT DO TERMO DE PESQUISA -->
-          <v-card style="margin-top: 15px;">
-            <div class="first-Part" style="border: solid firebrick;">
-              <div class="column" style="border: solid hotpink;">
-                  <v-sheet width="330" class="mx-auto">
-                    <v-form @submit.prevent>
-                      <v-text-field
-                        v-model="conteudoPesquisa"
-                        :rules="rules"
-                        label="Conteúdo de pesquisa"
-                        @input="transformarParaMaiuscula"
-                      ></v-text-field>
-                    </v-form>
-                  </v-sheet>
+          <v-card title="Nome do card" style="margin-top: 15px;">
+            <div class="first-Part">
+              <div class="column">
+                <v-sheet width="330" class="mx-auto">
+                  <v-form @submit.prevent>
+                    <v-text-field
+                      v-model="relatorioPesquisa"
+                      :rules="rules"
+                      label="Movimentação"
+                      @input="transformarParaMaiuscula"
+                    ></v-text-field>
+                  </v-form>
+                </v-sheet>
 
+                <v-sheet width="330" class="mx-auto">
+                  <v-form @submit.prevent>
+                    <v-text-field
+                      v-model="conteudoPesquisa"
+                      :rules="rules"
+                      label="Conteúdo de pesquisa"
+                      @input="transformarParaMaiuscula"
+                    ></v-text-field>
+                  </v-form>
+                </v-sheet>
+              </div>
+              <div class="column">
+                <v-sheet width="330" class="mx-auto">
+                  <v-form @submit.prevent>
+                    <v-text-field
+                      v-model="observacaoPesquisa"
+                      :rules="rules"
+                      label="Observação"
+                      @input="transformarParaMaiuscula"
+                    ></v-text-field>
+                  </v-form>
+                </v-sheet>
+
+                <v-sheet width="330" class="mx-auto">
+                  <v-form @submit.prevent>
+                    <v-text-field
+                      v-model="novaObservacao"
+                      :rules="rules"
+                      label="Nova Observação"
+                      @input="transformarParaMaiuscula"
+                    ></v-text-field>
+                  </v-form>
+                </v-sheet>
+              </div>
+
+              <div class="column">
+                <div class="itemData">
+                  <input type="date" v-model="data" placeholder="Data">
+                </div>
+
+                <v-sheet width="330" class="mx-auto">
+                  <v-form @submit.prevent>
+                    <v-text-field
+                      v-model="tituloPesquisa"
+                      :rules="itemRules"
+                      label="String Busca"
+                      @input="transformarParaMaiuscula"
+                    ></v-text-field>
+                  </v-form>
+                </v-sheet>
+              </div>
+            </div>
+          </v-card>
+
+              <!-- RENDERIZAR CARDS DINAMICAMENTE -->
+          <div v-for="(card, index) in cards" :key="index">
+            <v-card style="margin-top: 15px;">
+              <div class="first-Part">
+                <div class="column">
                   <v-sheet width="330" class="mx-auto">
                     <v-form @submit.prevent>
                       <v-text-field
@@ -53,23 +112,18 @@
                     </v-form>
                   </v-sheet>
 
-                  <div class="itemData">
-                    <input type="date" v-model="data" class="inputDate" placeholder="Data">
-                  </div>
-                </div>
-
-                <div class="column">
                   <v-sheet width="330" class="mx-auto">
                     <v-form @submit.prevent>
                       <v-text-field
-                        v-model="tituloPesquisa"
-                        :rules="itemRules"
-                        label="String Busca"
+                        v-model="conteudoPesquisa"
+                        :rules="rules"
+                        label="Conteúdo de pesquisa"
                         @input="transformarParaMaiuscula"
                       ></v-text-field>
                     </v-form>
                   </v-sheet>
-
+                </div>
+                <div class="column">
                   <v-sheet width="330" class="mx-auto">
                     <v-form @submit.prevent>
                       <v-text-field
@@ -80,9 +134,7 @@
                       ></v-text-field>
                     </v-form>
                   </v-sheet>
-                </div>
 
-                <div class="column">
                   <v-sheet width="330" class="mx-auto">
                     <v-form @submit.prevent>
                       <v-text-field
@@ -94,64 +146,26 @@
                     </v-form>
                   </v-sheet>
                 </div>
-              </div>
-            </v-card>
 
-              <!-- RENDERIZAR CARDS DINAMICAMENTE -->
-              <div v-for="(card, index) in cards" :key="index">
-                <v-card style="margin-top: 15px;">
-                  <div class="first-Part">
-              <div class="input-date">
-                
-                <div class="tituloPesquisa">
-                  <v-sheet width="300">
+                <div class="column">
+                  <div class="itemData">
+                    <input type="date" v-model="data" placeholder="Data">
+                  </div>
+
+                  <v-sheet width="330" class="mx-auto">
                     <v-form @submit.prevent>
                       <v-text-field
                         v-model="tituloPesquisa"
                         :rules="itemRules"
-                        label="Título de pesquisa"
+                        label="String Busca"
+                        @input="transformarParaMaiuscula"
                       ></v-text-field>
                     </v-form>
                   </v-sheet>
-                  
-                  <div class="itemData">
-                    <input type="date" v-model="data" class="inputDate" placeholder="Data">
-                  </div>
                 </div>
-                
-                <div class="inputRelatorio">
-                  <v-sheet width="300" class="mx-auto">
-                    <v-form @submit.prevent>
-                      <v-text-field
-                        v-model="conteudoPesquisa"
-                        :rules="rules"
-                        label="Conteúdo"
-                      ></v-text-field>
-                    </v-form>
-                  </v-sheet>
-
-                  <v-sheet width="300" class="mx-auto">
-                    <v-form @submit.prevent>
-                      <v-text-field
-                        v-model="relatorioPesquisa"
-                        :rules="rules"
-                        label="Movimentação"
-                      ></v-text-field>
-                    </v-form>
-                  </v-sheet>
-                  </div>
               </div>
-
-                  <!-- SELECIONAR OBSERVAÇÃO -->
-                  <!-- <v-autocomplete
-                    v-model="observacaoPesquisa"
-                    label="Selecionar Observação"
-                   
-                    style="margin: 16px 10px 0px 10px">
-                  </v-autocomplete> -->
-              </div>
-                </v-card>
-              </div>
+            </v-card>
+          </div>
 
         <!-- BOTÕES DE AÇÃO  -->
             <div class="observacao">
@@ -319,8 +333,15 @@ export default {
 <style>
 .first-Part {
   display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 20px 25px 20px 25px;
+}
+
+.column {
+  display: flex;
   flex-direction: column;
-  margin: 10px 10px 10px 10px;
+  align-items: center;
 }
 
 .input-date {
@@ -328,14 +349,11 @@ export default {
   flex-direction: column;
 }
 
-.inputDate {
+.itemData {
   margin-right: 50px;
   font-size: 0.95em;
-  
-}
-
-.itemData {
-  margin: 23px 13px 0px 10px;
+  margin: 10px 13px 28px 70px;
+  color: gray
 }
 
 .inputRelatorio {
