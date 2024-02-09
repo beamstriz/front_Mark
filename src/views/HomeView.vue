@@ -182,7 +182,8 @@
 
 <script>
 import { axios_controle_usuario } from '@/api/visao/Api_axios_visao';
-import axios from 'axios';
+import { getPageMark } from '../api/mark_back/getPageMark/getPage'
+import { getProcesso } from '../api/mark_back/getProcessosMark/getProcesso';
 
 export default {
   data() {
@@ -238,47 +239,51 @@ export default {
       this.novaObservacao = this.novaObservacao.toUpperCase();
     },
 
-    enviarDadosPesquisa() {
-      console.log('título de pesquisa:', this.tituloPesquisa);
-      console.log('relatório de pesquisa:', this.relatorioPesquisa);
-      console.log('conteúdo de pesquisa:', this.conteudoPesquisa);
-      console.log('observação:', this.observacaoPesquisa);
-      console.log('nova observação:', this.novaObservacao);
-      
-      if (this.tituloPesquisa.length > 0){
-        const dados = {
-          email: localStorage.getItem('sapiensEmail'),
-          password: localStorage.getItem('sapiensSenha'),
-          observacao_sapiens: this.observacaoPesquisa,
-          movimentacao: [this.relatorioPesquisa],
-          conteudo: [this.conteudoPesquisa],
-          StringBusca: [this.tituloPesquisa],
-          stringObservacao: [this.novaObservacao],
-          timeCreationDocument: [null],
-          idUser: "8767"
-        };
-        console.log(dados);
-        axios.post('http://localhost:3000/page', dados).then((response) => {
-          console.log("Dados enviados com sucesso: ", response.data);
-        }).catch((err) => {
-        console.log("Erro ao enviar os dados: ", err.response.status);
-        })
-      } else {
-        console.log("oi")
-        const dados = {
-          email: localStorage.getItem('sapiensEmail'),
-          password: localStorage.getItem('sapiensSenha'),
-          observacao_sapiens: this.observacaoPesquisa,
-          movimentacao: this.relatorioPesquisa,
-          conteudo: this.conteudoPesquisa,
-      };
-      console.log(dados);
-      axios.post('http://localhost:3000/processos', dados).then((response) => {
-        console.log("Dados enviados com sucesso: ", response.data);
-       }).catch((err) => {
-        console.log("Erro ao enviar os dados: ", err.response.status);
-       })
+    async enviarDadosPesquisa() {
+      try{
+
+          console.log('título de pesquisa:', this.tituloPesquisa);
+          console.log('relatório de pesquisa:', this.relatorioPesquisa);
+          console.log('conteúdo de pesquisa:', this.conteudoPesquisa);
+          console.log('observação:', this.observacaoPesquisa);
+          console.log('nova observação:', this.novaObservacao);
+        
+        if (this.tituloPesquisa.length > 0){
+          const dados = {
+            email: localStorage.getItem('sapiensEmail'),
+            password: localStorage.getItem('sapiensSenha'),
+            observacao_sapiens: this.observacaoPesquisa,
+            movimentacao: [this.relatorioPesquisa],
+            conteudo: [this.conteudoPesquisa],
+            StringBusca: [this.tituloPesquisa],
+            stringObservacao: [this.novaObservacao],
+            timeCreationDocument: [null],
+            idUser: "8767"
+          };
+          const response = await getPageMark(dados)
+          console.log(response)
+        } else {
+            console.log("oi")
+            const dados = {
+              email: localStorage.getItem('sapiensEmail'),
+              password: localStorage.getItem('sapiensSenha'),
+              observacao_sapiens: this.observacaoPesquisa,
+              movimentacao: [this.relatorioPesquisa],
+              conteudo: [this.conteudoPesquisa],
+              StringObservacao: ["string para etiquetar quando encntrar"],
+              timeCreationDocument: [null]
+            };
+            console.log(dados)
+            const responseProcess = await getProcesso(dados)
+            console.log(responseProcess)
+        }    
+
+
+
+      }catch(e){
+        console.log(e)
       }
+      
      
       //   console.log("Dados enviados com sucesso: ", response.data);
       // )};

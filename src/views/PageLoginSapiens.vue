@@ -12,7 +12,8 @@
 </template>
 
 <script>
-import { VerificarUserSapiens } from '@/api/verificadorSapiens/user';
+import { loginSapiens } from '@/api/mark_back/login/loginsSapiens';
+import Swal from 'sweetalert2';
 
 export default {
   name: "PageLoginSapiens",
@@ -20,22 +21,31 @@ export default {
   methods: {
     async loginUsuarioSapiens() {
         let data = {
-         username: this.username,
+         email: this.username,
          password: this.password,
         };
 
        try {
-         const usuarioExiste = await VerificarUserSapiens(data);
-        console.log("passou")
-         if (!usuarioExiste) {
+        console.log(data)
+         const usuarioExiste = await loginSapiens(data);
+        localStorage.setItem("sapiensEmail", data.email);
+        localStorage.setItem("sapiensSenha", data.password);
+        this.$router.push({ name: 'HomeView' });
+        console.log(usuarioExiste)
+         /* if (!usuarioExiste) {
            console.log("Usuário autenticado com sucesso");
            localStorage.setItem("sapiensEmail", data.username);
            localStorage.setItem("sapiensSenha", data.password);
            this.$router.push({ name: 'HomeView' });
          } else {
                  console.log("Usuário não existe ou credenciais inválidas");
-         }
+         } */
        } catch (error) {
+        Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Usuário Sapiens Incorreto",
+      });
            console.error('erro no login', error.message)
        }
     },
