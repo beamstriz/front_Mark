@@ -26,9 +26,14 @@
         <h3>Olá, usuário!</h3>
         <v-card title="Gerar pesquisa"></v-card>
           
-
           <!-- INPUT DO TERMO DE PESQUISA -->
-          <v-card title="Nome do card" style="margin-top: 15px;">
+          <v-card style="margin-top: 15px;">
+            <div class="title-card">
+              <div class="title-container">
+                <span class="card-title"> {{ cardTitle }}</span>
+                <v-btn @click="renomearCard" class="v-btn--icon"><v-icon>mdi-pencil</v-icon></v-btn>
+              </div>
+            </div>
             <div class="first-Part">
               <div class="column">
                 <v-sheet width="330" class="mx-auto">
@@ -87,7 +92,7 @@
                     <v-text-field
                       v-model="tituloPesquisa"
                       :rules="itemRules"
-                      label="String Busca"
+                      label="Palavra de Busca"
                       @input="transformarParaMaiuscula"
                     ></v-text-field>
                   </v-form>
@@ -99,6 +104,9 @@
               <!-- RENDERIZAR CARDS DINAMICAMENTE -->
           <div v-for="(card, index) in cards" :key="index">
             <v-card style="margin-top: 15px;">
+              <div class="apagarCards">
+                <v-icon color="red" icon="mdi-minus" size="x-small" id="btn-plus" @click="apagarCard(index)"></v-icon>
+              </div>
               <div class="first-Part">
                 <div class="column">
                   <v-sheet width="330" class="mx-auto">
@@ -196,7 +204,8 @@
 
 <script>
 import { axios_controle_usuario } from '@/api/visao/Api_axios_visao';
-import { getPageMark } from '../api/mark_back/getPageMark/getPage'
+import { getPageMark } from '../api/mark_back/getPageMark/getPage';
+import Swal from 'sweetalert2';
 import { getProcesso } from '../api/mark_back/getProcessosMark/getProcesso';
 
 export default {
@@ -214,6 +223,7 @@ export default {
       relatorioPesquisa: '',
       observacaoPesquisa:'',
       novaObservacao: '',
+      cardTitle: "Nome card",
       itemRules: [
         value => {
           if (value) return true
@@ -223,10 +233,39 @@ export default {
     }
   },
   methods: {
+    renomearCard() {
+      Swal.fire({
+        title: "Renomear Card",
+        input: "text",
+        inputAttributes: {
+          autocapitalize: "off"
+        },
+        showCancelButton: true,
+        confirmButtonText: "Renomear",
+        preConfirm: (novoNome) => {
+          if (novoNome.trim() === "") {
+            Swal.showValidationMessage("Por favor, insira um nome válido.");
+          }
+        }
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.cardTitle = result.value;
+          Swal.fire({
+            icon: "success",
+            title: "Card renomeado com sucesso!",
+            showConfirmButton: false,
+            timer: 1500
+          });
+        }
+      });
+    },
+
+
     sair(){
       localStorage.clear();
       this.$router.push({ name: 'PageLogin' });
     },
+
     gerarNovoCard() {
       this.cards.push({
         tituloPesquisa: '',
@@ -291,9 +330,6 @@ export default {
             const responseProcess = await getProcesso(dados)
             console.log(responseProcess)
         }    
-
-
-
       }catch(e){
         console.log(e)
       }
@@ -336,6 +372,14 @@ export default {
   flex-direction: row;
   justify-content: space-between;
   margin: 20px 25px 20px 25px;
+}
+
+.title-card {
+  padding: 12px 0px 5px 28px;
+}
+
+.card-title {
+  margin-right: 15px;
 }
 
 .column {
