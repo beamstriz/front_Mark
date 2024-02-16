@@ -99,6 +99,12 @@
                 </v-sheet>
               </div>
             </div>
+            <div class="radios">
+              <v-radio-group label="Tipo da Observação:">
+                  <v-radio label="Administrativo" value="admin"></v-radio>
+                  <v-radio label="Judicial" value="judic"></v-radio>
+              </v-radio-group>
+            </div>
           </v-card>
 
               <!-- RENDERIZAR CARDS DINAMICAMENTE -->
@@ -223,7 +229,7 @@ export default {
       relatorioPesquisa: '',
       observacaoPesquisa:'',
       novaObservacao: '',
-      cardTitle: "Nome card",
+      cardTitle: "Título card",
       itemRules: [
         value => {
           if (value) return true
@@ -371,7 +377,7 @@ export default {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  margin: 20px 25px 20px 25px;
+  margin: 0px 0px 0px 0px;
 }
 
 .title-card {
@@ -385,7 +391,12 @@ export default {
 .column {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: space-around;
+  padding: 0px 25px 0px 25px;
+}
+
+.radios{
+  padding: 0px 0px 0px 10px
 }
 
 .input-date {
@@ -415,7 +426,6 @@ export default {
   flex-direction: row;
   justify-content: space-between;
   margin-top:15px;
-
 }
 
 .apagarCards {
