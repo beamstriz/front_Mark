@@ -100,9 +100,9 @@
               </div>
             </div>
             <div class="radios">
-              <v-radio-group label="Tipo da Observação:">
-                  <v-radio label="Administrativo" value="admin"></v-radio>
-                  <v-radio label="Judicial" value="judic"></v-radio>
+              <v-radio-group label="Tipo da Observação:" v-model="checkboxTipoObservacao">
+                  <v-radio label="Administrativo" value="ADMINISTRATIVO"  ></v-radio>
+                  <v-radio label="Judicial" value="JUDICIAL" ></v-radio>
               </v-radio-group>
             </div>
           </v-card>
@@ -229,6 +229,8 @@ export default {
       relatorioPesquisa: '',
       observacaoPesquisa:'',
       novaObservacao: '',
+      checkboxTipoObservacao: "ADMINISTRATIVO",
+      checkboxJud: false,
       cardTitle: "Título card",
       itemRules: [
         value => {
@@ -301,10 +303,10 @@ export default {
     async enviarDadosPesquisa() {
       try{
 
-          console.log('título de pesquisa:', this.tituloPesquisa);
-          console.log('relatório de pesquisa:', this.relatorioPesquisa);
-          console.log('conteúdo de pesquisa:', this.conteudoPesquisa);
-          console.log('observação:', this.observacaoPesquisa);
+          console.log('StringBusca:', this.tituloPesquisa);
+          console.log('Movimentação:', this.relatorioPesquisa);
+          console.log('conteudo da pesquisa:', this.conteudoPesquisa);
+          console.log('observaçãoSapiens:', this.observacaoPesquisa);
           console.log('nova observação:', this.novaObservacao);
         
         if (this.tituloPesquisa.length > 0){
@@ -315,9 +317,10 @@ export default {
             movimentacao: [this.relatorioPesquisa],
             conteudo: [this.conteudoPesquisa],
             StringBusca: [this.tituloPesquisa],
-            stringObservacao: [this.novaObservacao],
+            StringObservacao: [this.novaObservacao],
             timeCreationDocument: [null],
-            idUser: "8767"
+            idUser: "8767",
+            typeSearch: this.checkboxTipoObservacao 
           };
           const response = await getPageMark(dados)
           console.log(response)
@@ -329,8 +332,9 @@ export default {
               observacao_sapiens: this.observacaoPesquisa,
               movimentacao: [this.relatorioPesquisa],
               conteudo: [this.conteudoPesquisa],
-              StringObservacao: ["string para etiquetar quando encntrar"],
-              timeCreationDocument: [null]
+              StringObservacao: [this.novaObservacao],
+              timeCreationDocument: [null],
+              typeSearch: this.checkboxTipoObservacao 
             };
             console.log(dados)
             const responseProcess = await getProcesso(dados)
