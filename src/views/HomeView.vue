@@ -31,9 +31,11 @@
             <div class="title-card">
               <div class="title-container">
                 <span class="card-title"> {{ cardTitle }}</span>
-                <v-btn @click="renomearCard" class="v-btn--icon"><v-icon>mdi-pencil</v-icon></v-btn>
+                <v-btn @click="renomearCard" class="transparent-button" :class="{ 'grey-hover' : isMouseOver }"><v-icon>mdi-pencil</v-icon></v-btn>
+                <v-btn @click="salvarDados" class="transparent-button" :class="{ 'grey-hover' : isMouseOver }"><v-icon style="color: rgb(111, 157, 217);">mdi-content-save</v-icon></v-btn>
               </div>
             </div>
+            <v-divider></v-divider>
             <div class="first-Part">
               <div class="column">
                 <v-sheet width="330" class="mx-auto">
@@ -191,10 +193,6 @@
                 <v-btn prepend-icon="mdi-delete" style="background-color: rgb(241, 230, 106); margin-left:50px" @click="limparInputs">
                   Limpar
                 </v-btn>
-
-                <v-btn prepend-icon="mdi-close" style="background-color: rgb(241, 106, 106); margin-left:50px">
-                  Parar
-                </v-btn>
               </div>
               
               <v-icon color="blue" icon="mdi-plus" size="x-small" id="btn-plus" @click="gerarNovoCard"></v-icon>
@@ -211,6 +209,7 @@
 <script>
 import { axios_controle_usuario } from '@/api/visao/Api_axios_visao';
 import { getPageMark } from '../api/mark_back/getPageMark/getPage';
+import { postSaveDados } from '../api/mark_back/postSaveDadosMark/postSaveDados';
 import Swal from 'sweetalert2';
 import { getProcesso } from '../api/mark_back/getProcessosMark/getProcesso';
 
@@ -241,9 +240,22 @@ export default {
     }
   },
   methods: {
-    tipoObservacao(){ 
-      if (this.checkboxAdmin){
-        console.log("dasdsd")
+    async salvarDados(){
+      const dados = {
+        relatorioPesquisa: this.relatorioPesquisa,
+        conteudoPesquisa: this.conteudoPesquisa,
+        observacaoPesquisa: this.observacaoPesquisa,
+        novaObservacao: this.novaObservacao,
+        data: this.data,
+        tituloPesquisa: this.tituloPesquisa,
+        checkboxTipoObservacao: this.checkboxTipoObservacao,
+      };
+
+      try {
+        const response = await postSaveDados(dados)
+        console.log('Dados enviados com sucesso!', response)
+      } catch(error) {
+        console.error("Erro no envio dos dados:", error);
       }
     },
 
@@ -255,7 +267,7 @@ export default {
           autocapitalize: "off"
         },
         showCancelButton: true,
-        confirmButtonText: "Renomear",
+        confirmButtonText: "Salvar",
         preConfirm: (novoNome) => {
           if (novoNome.trim() === "") {
             Swal.showValidationMessage("Por favor, insira um nome válido.");
@@ -266,7 +278,7 @@ export default {
           this.cardTitle = result.value;
           Swal.fire({
             icon: "success",
-            title: "Card renomeado com sucesso!",
+            title: "Salvo com sucesso!",
             showConfirmButton: false,
             timer: 1500
           });
@@ -316,7 +328,6 @@ export default {
           console.log('nova observação:', this.novaObservacao);
         
         if (this.tituloPesquisa.length > 0){
-          console.log(this.checkboxTipoObservacao)
           const dados = {
             email: localStorage.getItem('sapiensEmail'),
             password: localStorage.getItem('sapiensSenha'),
@@ -342,7 +353,6 @@ export default {
               conteudo: [this.conteudoPesquisa],
               StringObservacao: [this.novaObservacao],
               timeCreationDocument: [null],
-              idUser: "8767",
               typeSearch: this.checkboxTipoObservacao 
             };
             console.log(dados)
@@ -386,30 +396,52 @@ export default {
 </script>
 
 <style>
-.first-Part {
+.title-card {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  margin: 0px 0px 0px 0px;
+  padding: 12px 17px 5px 28px;
 }
 
-.title-card {
-  padding: 12px 0px 5px 28px;
+.title-container {
+  display: flex;
+  flex-direction: row;
+  width: 50%;
 }
 
 .card-title {
   margin-right: 15px;
+  font-size: 20px;
+}
+
+.transparent-button {
+  box-shadow: none;
+  height: 20px;
+  width: auto;
+}
+
+.grey-hover:hover{
+  background-color: #f0f0f0;
+  box-shadow: none
+}
+
+.first-Part {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin:1% 0% 0% 0%;
 }
 
 .column {
   display: flex;
   flex-direction: column;
   align-items: space-around;
+  
   padding: 0px 25px 0px 25px;
 }
 
 .radios{
-  padding: 0px 0px 0px 10px
+  padding: 0px 0px 0px 10px;
 }
 
 .input-date {
