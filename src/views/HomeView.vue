@@ -93,7 +93,7 @@
                   <v-form @submit.prevent>
                     <v-text-field
                       v-model="tituloPesquisa"
-                      :rules="itemRules"
+                      :rules="[]"
                       label="Palavra de Busca"
                       @input="transformarParaMaiuscula"
                     ></v-text-field>
@@ -182,10 +182,15 @@
               </div>
             </v-card>
           </div>
+          <div>
+              
+              <progress-loader :exibirProgresso="mostrarProgresso"></progress-loader>
+             
+          </div>
 
         <!-- BOTÕES DE AÇÃO  -->
-            <div class="observacao">
-              <div>
+            <div >
+              <div class="botoesacoes">
                 <v-btn prepend-icon="mdi-play" style="background-color: rgb(157, 247, 115);" @click="enviarDadosPesquisa">
                   Iniciar
                 </v-btn>
@@ -194,13 +199,13 @@
                   Limpar
                 </v-btn>
               </div>
-              
+              <!-- <div class="observacao">
               <v-icon color="blue" icon="mdi-plus" size="x-small" id="btn-plus" @click="gerarNovoCard"></v-icon>
                 <v-tooltip activator="#btn-plus">
                   Clique aqui para gerar nova pesquisa.
                 </v-tooltip>
+              </div >  --> 
             </div>
-  
       </v-container>
     </v-main>
   </v-app>
@@ -212,8 +217,13 @@ import { getPageMark } from '../api/mark_back/getPageMark/getPage';
 import { postSaveDados } from '../api/mark_back/postSaveDadosMark/postSaveDados';
 import Swal from 'sweetalert2';
 import { getProcesso } from '../api/mark_back/getProcessosMark/getProcesso';
+import ProgressLoader from '@/components/ProgressLoader.vue';
+
 
 export default {
+  components: {
+    ProgressLoader
+  },
   data() {
     return {
       Menuaberto: false,
@@ -230,6 +240,7 @@ export default {
       novaObservacao: '',
       checkboxTipoObservacao: "ADMINISTRATIVO",
       checkboxJud: false,
+      mostrarProgresso: false,
       cardTitle: "Título card",
       itemRules: [
         value => {
@@ -299,11 +310,12 @@ export default {
       })
     },
 
-    limparInputs() {
-      this.tituloPesquisa = ''
-      for (let i = 0; i < this.cards.length; i++) {
-        this.cards[i].tituloPesquisa = '';
-      }
+    limparInputs() {     
+      this.observacaoPesquisa = ""
+      this.relatorioPesquisa = ""
+      this.conteudoPesquisa = ""
+      this.tituloPesquisa = ""
+      this.novaObservacao = ""
     },
 
     apagarCard(index) {
@@ -327,21 +339,28 @@ export default {
           console.log('observaçãoSapiens:', this.observacaoPesquisa);
           console.log('nova observação:', this.novaObservacao);
         
-        if (this.tituloPesquisa.length > 0){
+        if(this.observacaoPesquisa.length <= 0 || this.relatorioPesquisa.length <= 0 || this.conteudoPesquisa.length <= 0 || this.novaObservacao.length <= 0){
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Informe os dados para continuar",
+          });
+        } else if (this.tituloPesquisa.length > 0){
           const dados = {
             email: localStorage.getItem('sapiensEmail'),
             password: localStorage.getItem('sapiensSenha'),
-            observacao_sapiens: this.observacaoPesquisa,
+            observacao_sapiens: this.observacaoPesquisa.trim(),
             movimentacao: [this.relatorioPesquisa],
             conteudo: [this.conteudoPesquisa],
             StringBusca: [this.tituloPesquisa],
             StringObservacao: [this.novaObservacao],
             timeCreationDocument: [null],
-            idUser: "8767",
+            idUser: localStorage.getItem("authToken"),
             typeSearch: this.checkboxTipoObservacao 
           };
-          console.log(dados)
+          this.mostrarProgresso = true;
           const response = await getPageMark(dados)
+          this.mostrarProgresso = false;
           console.log(response)
         } else {
             console.log("oi")
@@ -356,10 +375,18 @@ export default {
               typeSearch: this.checkboxTipoObservacao 
             };
             console.log(dados)
+            this.mostrarProgresso = true;
             const responseProcess = await getProcesso(dados)
+            this.mostrarProgresso = false;
             console.log(responseProcess)
         }    
       }catch(e){
+        Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "ERRO AO TRIAR",
+      });
+        this.mostrarProgresso = false;
         console.log(e)
       }
       
@@ -477,6 +504,13 @@ export default {
   display: flex;
   justify-content: end;
   padding-top: 5px;
+}
+
+.botoesacoes{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-top:15px;
 }
 
 </style>

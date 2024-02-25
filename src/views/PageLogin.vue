@@ -43,6 +43,7 @@
 <script>
 import { login } from "@/api/controleUsuario/login"
 import { cadastrarUsuario } from '@/api/controleUsuario/cadastrarUsuario'
+import Swal from 'sweetalert2';
 
 export default {
   data() {
@@ -68,6 +69,11 @@ export default {
          this.$router.push({ name: 'PageLoginSapiens' });
 
        } catch (error) {
+        Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "User Incorrect",
+      });
          console.error('erro no login', error.message);
        }
     },
@@ -83,6 +89,11 @@ export default {
         console.log(response);
 
       } catch (error) {
+        Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Falha ao cadastrar",
+      });
         console.error('erro no cadastro', error.message);
       }
     }
