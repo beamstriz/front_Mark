@@ -24,72 +24,93 @@
     <v-main style="background-color: #fafafa">
       <v-container>
         <h3>Olá, usuário!</h3>
-        <v-card title="Gerar pesquisa"></v-card>
-          
-          <!-- INPUT DO TERMO DE PESQUISA -->
-          <v-card style="margin-top: 15px;">
+        <v-card title="Fichas Salvas" class="first-Card"></v-card>
+        <v-card title="Gerar pesquisa" class="first-Card" style="margin-top: 10px;">
+          <v-icon 
+            color="blue" 
+            icon="mdi-plus" 
+            size="x-small" 
+            id="btn-plus" 
+            @click="gerarNovoCard"
+          ></v-icon>
+          <v-tooltip activator="#btn-plus">
+            Clique aqui para gerar nova pesquisa.
+          </v-tooltip>
+        </v-card>
+
+              <!-- RENDERIZAR FICHAS ADICIONADAS DINAMICAMENTE -->
+          <div v-for="(card, index) in cards" :key="index">
+            <v-card style="margin-top: 15px;">
             <div class="title-card">
               <div class="title-container">
                 <span class="card-title"> {{ cardTitle }}</span>
-                <v-btn @click="renomearCard" class="transparent-button" :class="{ 'grey-hover' : isMouseOver }"><v-icon>mdi-pencil</v-icon></v-btn>
-                <v-btn @click="salvarDados" class="transparent-button" :class="{ 'grey-hover' : isMouseOver }"><v-icon style="color: rgb(111, 157, 217);">mdi-content-save</v-icon></v-btn>
+                <div class="funcaoCard-order">
+                  <div class="funcaoCard">
+                    <v-icon icon="mdi-pencil" @click="renomearCard" size="20px"></v-icon>
+                  </div>
+                  <div class="funcaoCard">
+                    <v-icon icon="mdi-content-save" @click="salvarDados" color="rgb(111, 157, 217)" size="20px"></v-icon>
+                  </div>
+                </div>
               </div>
+                <div class="funcaoCard">
+                  <v-icon icon="mdi-minus" @click="apagarCard(index)" color="red" size="x-small" id="btn-plus"></v-icon>
+                </div>
             </div>
             <v-divider></v-divider>
-            <div class="first-Part">
-              <div class="column">
-                <v-sheet width="330" class="mx-auto">
+            <div style="padding: 30px 30px 0px 30px;">
+              <v-row>
+              <v-col cols="12" sm="6" md="4">
+                <v-sheet width="100%">
                   <v-form @submit.prevent>
                     <v-text-field
                       v-model="relatorioPesquisa"
-                      :rules="rules"
+                      :rules="itemRules"
                       label="Movimentação"
                       @input="transformarParaMaiuscula"
                     ></v-text-field>
                   </v-form>
                 </v-sheet>
-
-                <v-sheet width="330" class="mx-auto">
+              
+                <v-sheet width="100%">
                   <v-form @submit.prevent>
                     <v-text-field
                       v-model="conteudoPesquisa"
-                      :rules="rules"
+                      :rules="itemRules"
                       label="Conteúdo de pesquisa"
                       @input="transformarParaMaiuscula"
                     ></v-text-field>
                   </v-form>
                 </v-sheet>
-              </div>
-              <div class="column">
-                <v-sheet width="330" class="mx-auto">
+              </v-col>
+
+              <v-col cols="12" sm="6" md="4">
+                <v-sheet width="100%">
                   <v-form @submit.prevent>
                     <v-text-field
                       v-model="observacaoPesquisa"
-                      :rules="rules"
+                      :rules="itemRules"
                       label="Observação"
                       @input="transformarParaMaiuscula"
                     ></v-text-field>
                   </v-form>
                 </v-sheet>
 
-                <v-sheet width="330" class="mx-auto">
+                <v-sheet width="100%">
                   <v-form @submit.prevent>
                     <v-text-field
                       v-model="novaObservacao"
-                      :rules="rules"
+                      :rules="itemRules"
                       label="Nova Observação"
                       @input="transformarParaMaiuscula"
                     ></v-text-field>
                   </v-form>
                 </v-sheet>
-              </div>
+              </v-col>
 
-              <div class="column">
-                <div class="itemData">
-                  <input type="date" v-model="data" placeholder="Data">
-                </div>
-
-                <v-sheet width="330" class="mx-auto">
+              <v-col cols="12" sm="6" md="4">
+                <v-text-field cols="3" label="Data" type="date"></v-text-field>
+                <v-sheet width="100%">
                   <v-form @submit.prevent>
                     <v-text-field
                       v-model="tituloPesquisa"
@@ -99,7 +120,8 @@
                     ></v-text-field>
                   </v-form>
                 </v-sheet>
-              </div>
+              </v-col>
+            </v-row>
             </div>
             <div class="radios">
               <v-radio-group label="Tipo da Observação:" v-model="checkboxTipoObservacao">
@@ -108,79 +130,6 @@
               </v-radio-group>
             </div>
           </v-card>
-
-              <!-- RENDERIZAR CARDS DINAMICAMENTE -->
-          <div v-for="(card, index) in cards" :key="index">
-            <v-card style="margin-top: 15px;">
-              <div class="apagarCards">
-                <v-icon color="red" icon="mdi-minus" size="x-small" id="btn-plus" @click="apagarCard(index)"></v-icon>
-              </div>
-              <div class="first-Part">
-                <div class="column">
-                  <v-sheet width="330" class="mx-auto">
-                    <v-form @submit.prevent>
-                      <v-text-field
-                        v-model="relatorioPesquisa"
-                        :rules="rules"
-                        label="Movimentação"
-                        @input="transformarParaMaiuscula"
-                      ></v-text-field>
-                    </v-form>
-                  </v-sheet>
-
-                  <v-sheet width="330" class="mx-auto">
-                    <v-form @submit.prevent>
-                      <v-text-field
-                        v-model="conteudoPesquisa"
-                        :rules="rules"
-                        label="Conteúdo de pesquisa"
-                        @input="transformarParaMaiuscula"
-                      ></v-text-field>
-                    </v-form>
-                  </v-sheet>
-                </div>
-                <div class="column">
-                  <v-sheet width="330" class="mx-auto">
-                    <v-form @submit.prevent>
-                      <v-text-field
-                        v-model="observacaoPesquisa"
-                        :rules="rules"
-                        label="Observação"
-                        @input="transformarParaMaiuscula"
-                      ></v-text-field>
-                    </v-form>
-                  </v-sheet>
-
-                  <v-sheet width="330" class="mx-auto">
-                    <v-form @submit.prevent>
-                      <v-text-field
-                        v-model="novaObservacao"
-                        :rules="rules"
-                        label="Nova Observação"
-                        @input="transformarParaMaiuscula"
-                      ></v-text-field>
-                    </v-form>
-                  </v-sheet>
-                </div>
-
-                <div class="column">
-                  <div class="itemData">
-                    <input type="date" v-model="data" placeholder="Data">
-                  </div>
-
-                  <v-sheet width="330" class="mx-auto">
-                    <v-form @submit.prevent>
-                      <v-text-field
-                        v-model="tituloPesquisa"
-                        :rules="itemRules"
-                        label="String Busca"
-                        @input="transformarParaMaiuscula"
-                      ></v-text-field>
-                    </v-form>
-                  </v-sheet>
-                </div>
-              </div>
-            </v-card>
           </div>
 
         <!-- BOTÕES DE AÇÃO  -->
@@ -194,11 +143,6 @@
                   Limpar
                 </v-btn>
               </div>
-              
-              <v-icon color="blue" icon="mdi-plus" size="x-small" id="btn-plus" @click="gerarNovoCard"></v-icon>
-                <v-tooltip activator="#btn-plus">
-                  Clique aqui para gerar nova pesquisa.
-                </v-tooltip>
             </div>
   
       </v-container>
@@ -230,7 +174,7 @@ export default {
       novaObservacao: '',
       checkboxTipoObservacao: "ADMINISTRATIVO",
       checkboxJud: false,
-      cardTitle: "Título card",
+      cardTitle: "Título Ficha",
       itemRules: [
         value => {
           if (value) return true
@@ -241,6 +185,19 @@ export default {
   },
   methods: {
     async salvarDados(){
+      Swal.fire({
+        title: "Você deseja salvar alterações?",
+        showDenyButton: true,
+        confirmButtonText: "Salvar",
+        denyButtonText: `Cancelar`
+      }).then((result) => {
+        if (result.isConfirmed) {
+          Swal.fire("Salvo com sucesso!", "", "success");
+        } else if (result.isDenied) {
+          Swal.fire("Alterações não foram salvas", "", "info");
+        }
+      });
+      
       const dados = {
         relatorioPesquisa: this.relatorioPesquisa,
         conteudoPesquisa: this.conteudoPesquisa,
@@ -266,7 +223,8 @@ export default {
         inputAttributes: {
           autocapitalize: "off"
         },
-        showCancelButton: true,
+        showDenyButton: true,
+        denyButtonText: `Cancelar`,
         confirmButtonText: "Salvar",
         preConfirm: (novoNome) => {
           if (novoNome.trim() === "") {
@@ -307,7 +265,39 @@ export default {
     },
 
     apagarCard(index) {
-      this.cards.splice(index, 1);
+      const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+        confirmButton: "btn btn-success",
+        cancelButton: "btn btn-danger"
+      },
+      buttonsStyling: false
+    });
+    swalWithBootstrapButtons.fire({
+      title: "Você tem certeza?",
+      text: "Você não será capaz de recuperar dados!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Sim, deletar!",
+      cancelButtonText: "Não, cancelar!",
+      reverseButtons: true
+    }).then((result) => {
+      if (result.isConfirmed) {
+        swalWithBootstrapButtons.fire({
+          title: "Deletado!",
+          text: "Deletado com sucesso.",
+          icon: "success",
+        });
+        this.cards.splice(index, 1);
+      } else if (
+        result.dismiss === Swal.DismissReason.cancel
+      ) {
+        swalWithBootstrapButtons.fire({
+          title: "Cancelado",
+          text: "Seus dados estão salvos :)",
+          icon: "error"
+        });
+      }
+    });
     },
 
     transformarParaMaiuscula() {
@@ -396,6 +386,23 @@ export default {
 </script>
 
 <style>
+
+.first-Card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.first-Card > .v-icon:hover {
+  border-radius: 80%;
+  background-color: rgb(242, 242, 242);
+}
+
+.first-Card .v-icon {
+  position: absolute;
+  right: 2%;
+}
+
 .title-card {
   display: flex;
   flex-direction: row;
@@ -436,7 +443,7 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: space-around;
-  
+  border: solid 1px rebeccapurple;
   padding: 0px 25px 0px 25px;
 }
 
@@ -447,13 +454,6 @@ export default {
 .input-date {
   display: flex;
   flex-direction: column;
-}
-
-.itemData {
-  margin-right: 50px;
-  font-size: 0.95em;
-  margin: 10px 13px 28px 70px;
-  color: gray
 }
 
 .inputRelatorio {
@@ -473,10 +473,24 @@ export default {
   margin-top:15px;
 }
 
-.apagarCards {
+.funcaoCard-order{
+  display:flex;
+  flex-direction: row;
+  width: 10%;
+  justify-content: space-between;
+}
+
+.funcaoCard {
   display: flex;
-  justify-content: end;
-  padding-top: 5px;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.funcaoCard:hover {
+  border-radius: 30%;
+  padding: 0.5px;
+  background-color: rgb(242, 242, 242);
 }
 
 </style>
