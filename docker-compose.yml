@@ -1,0 +1,8 @@
+version: '3.8'
+
+services:
+  vueapp:
+    image: patricksampa/front-mark:1.0.0 # substitua com o nome do usuário, nome da imagem e tag no Docker Hub
+    ports:
+      - "8080:8080"
+    restart: always
